@@ -13,7 +13,12 @@ const socket = io()
 document.querySelector('#message-form').addEventListener('submit', (e)=>{
     e.preventDefault()
     const message = e.target.elements.message.value //document.querySelector('input').value  
-    socket.emit('sendMessage', message)
+    socket.emit('sendMessage', message, (callback)=>{
+        if(callback){
+            return console.log(callback)
+        }
+        console.log('message deliverd')
+    })
 })
 socket.on('message', (message)=>{
     console.log(message)
@@ -29,6 +34,8 @@ document.querySelector('#send-location').addEventListener('click',(e) =>{
         socket.emit('SendLocation', {
             latitude:position.coords.latitude,
             longitude:position.coords.longitude
+        }, (callback) => {
+            console.log(callback)
         })
     })
     
