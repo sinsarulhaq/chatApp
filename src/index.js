@@ -25,10 +25,10 @@ io.on('connection', (socket) => {
     socket.emit('message', 'Welcome!')
     socket.broadcast.emit('message', 'A new user joined')
 
-    socket.on('sendMessage', (message, callback)=>{
+    socket.on('sendMessage', (message, callback) => {
         const filter = new Filter()
-        if(filter.isProfane(message)){
-            return callback('bad words not allowed!')
+        if (filter.isProfane(message)) {
+            return callback('bad words are not allowed!')
         }
         io.emit('message', message)
         callback()
@@ -39,7 +39,7 @@ io.on('connection', (socket) => {
         callback('Location shared')
     })
 
-    socket.on('disconnect',()=>{
+    socket.on('disconnect', () => {
         io.emit('message', 'A user has left!')
     })
 
