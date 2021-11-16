@@ -1,10 +1,9 @@
 const socket = io()
 
-
 const $messageForm = document.querySelector('#message-form')
 const $messageFormInput = document.querySelector('input')
 const $messageFormButton = document.querySelector('button')
-
+const $messages = document.getElementById('messages')
 const $sendLocationButton = document.querySelector('#send-location')
 
 // socket.on('countUpdated', (count) => {
@@ -15,6 +14,24 @@ const $sendLocationButton = document.querySelector('#send-location')
 //     console.log('Clicked')
 //     socket.emit('increment')
 // })
+
+//Templates
+const messageTemplate = document.querySelector('#message-template').innerHTML
+const locationMessageTemplate = document.querySelector('#location-message-template').innerHTML
+
+socket.on('message', (message) => {
+    const html = Mustache.render(messageTemplate, {
+        message
+    })
+    $messages.insertAdjacentHTML('afterbegin', html)
+})//for listen messages thath send from server side
+
+socket.on('locationMessage', (location) => {
+    const html = Mustache.render(locationMessageTemplate, {
+        location
+    })
+    $messages.insertAdjacentHTML('afterbegin', html)
+})
 
 $messageForm.addEventListener('submit', (e) => {
     e.preventDefault()
@@ -32,9 +49,7 @@ $messageForm.addEventListener('submit', (e) => {
         console.log('message deliverd')
     })
 })
-socket.on('message', (message) => {
-    console.log(message)
-})  //for listen messages thath send from server side 
+
 
 $sendLocationButton.addEventListener('click', (e) => {
     e.preventDefault()
